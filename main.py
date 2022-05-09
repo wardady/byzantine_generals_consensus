@@ -68,7 +68,6 @@ def cli_handler(command: str):
                         GENERALS[new_primary].primary = True
                     else:
                         GENERALS.pop(i)
-                    # TODO: In case primary is deleted, new primary selected automatically
             for general in GENERALS:
                 print(f"G{general.id}, state={general.state}")
         else:
@@ -99,7 +98,7 @@ def main(argv):
     for general in GENERALS:
         general.start()
 
-    while True:  # TODO: condition to stop/stop only on keyboard interrupt?
+    while True: 
         command = input("$ ")
         try:
             cli_handler(command)
