@@ -37,7 +37,7 @@ def cli_handler(command: str):
             k = len(list(filter(lambda g: g.state == GeneralState.FAULTY, GENERALS)))
             if len(GENERALS) < 3 * k + 1:
                 print(
-                    "Execute order: cannot be determined – not enough generals in the system! "
+                    "Execute order: cannot be determined - not enough generals in the system! "
                     f"{k} faulty node(s) in the system - {len(GENERALS) - k} out of {len(GENERALS)} quorum "
                     "not consistent")
     elif command[0] == "g-state":
@@ -62,7 +62,12 @@ def cli_handler(command: str):
         if len(command) == 2:
             for i, general in enumerate(GENERALS):
                 if general.id == int(command[1]):
-                    GENERALS.pop(i)
+                    if general.primary == True:
+                        GENERALS.pop(i)
+                        new_primary = randint(0,len(GENERALS)-1)
+                        GENERALS[new_primary].primary = True
+                    else:
+                        GENERALS.pop(i)
                     # TODO: In case primary is deleted, new primary selected automatically
             for general in GENERALS:
                 print(f"G{general.id}, state={general.state}")
@@ -78,6 +83,8 @@ def cli_handler(command: str):
                 print("Number of generals to add should be a positive integer", file=sys.stderr)
         else:
             print("Usage: g-add [num_of_generals]", file=sys.stderr)
+    elif command[0] == "exit":
+        exit(0)
     else:
         print(f"Unknown command: {command[0]}", file=sys.stderr)
 
