@@ -29,10 +29,17 @@ def cli_handler(command: str):
     if command[0] == "actual-order":
         if len(command) != 2 or (command[1] != "attack" and command[1] != "retreat"):
             print("Usage: actual-order [order] where order is attack/retreat", file=sys.stderr)
-        if command[1] == "attack":
-            pass
-        elif command[1] == "retreat":
-            pass
+        else:
+            if command[1] == "attack":
+                pass
+            elif command[1] == "retreat":
+                pass
+            k = len(list(filter(lambda g: g.state == GeneralState.FAULTY, GENERALS)))
+            if len(GENERALS) < 3 * k + 1:
+                print(
+                    "Execute order: cannot be determined – not enough generals in the system! "
+                    f"{k} faulty node(s) in the system - {len(GENERALS) - k} out of {len(GENERALS)} quorum "
+                    "not consistent")
     elif command[0] == "g-state":
         if len(command) == 1:
             for general in GENERALS:
